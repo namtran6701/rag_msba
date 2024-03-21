@@ -31,9 +31,9 @@ ANTHROPIC_API_KEY=os.getenv('ANTHROPIC_API_KEY')
 # Function to set up environment variables and initialize models
 def setup_environment_and_models():
     load_dotenv()
-    os.environ["LLAMA_CLOUD_API_KEY"] =LLAMA_CLOUD_API_KEY
-    os.environ["OPENAI_API_KEY"] = OPENAI_API_KEY
-    os.environ['ANTHROPIC_API_KEY'] = ANTHROPIC_API_KEY
+    os.environ["LLAMA_CLOUD_API_KEY"]=LLAMA_CLOUD_API_KEY
+    os.environ["OPENAI_API_KEY"]=OPENAI_API_KEY
+    os.environ['ANTHROPIC_API_KEY']=ANTHROPIC_API_KEY
     # Set up OpenAI LLM and embedding model
     llm = Anthropic(model="claude-3-sonnet-20240229", temperature=0.0)
     Settings.llm = llm
