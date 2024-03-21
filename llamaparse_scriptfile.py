@@ -3,13 +3,10 @@ from dotenv import load_dotenv
 import os
 from llama_index.llms.openai import OpenAI
 from llama_index.llms.anthropic import Anthropic
-# from llama_index.readers.web import BeautifulSoupWebReader
 from llama_parse import LlamaParse
 from llama_index.core.node_parser import MarkdownElementNodeParser
 from llama_index.postprocessor.flag_embedding_reranker import FlagEmbeddingReranker
 from llama_index.core import VectorStoreIndex, Settings
-import nest_asyncio
-nest_asyncio.apply()
 from llama_index.core import SimpleDirectoryReader
 from langfuse.llama_index import LlamaIndexCallbackHandler
 from llama_index.core.callbacks import CallbackManager
@@ -24,24 +21,20 @@ langfuse_callback_handler = LlamaIndexCallbackHandler(
 # Set the callback manager
 Settings.callback_manager = CallbackManager([langfuse_callback_handler])
 
-
-# LLAMA_CLOUD_API_KEY=os.getenv('LLAMA_CLOUD_AI')
-# OPENAI_API_KEY=os.getenv('OPENAI_API_KEY')
-# ANTHROPIC_API_KEY=os.getenv('ANTHROPIC_API_KEY')
-# Function to set up environment variables and initialize models
+# Set up environment variables and initialize models
 def setup_environment_and_models():
     load_dotenv()
-    os.environ["LLAMA_CLOUD_API_KEY"]=st.secrets['LLAMA_CLOUD_API_KEY']
-    os.environ["OPENAI_API_KEY"]=st.secrets['OPENAI_API_KEY']
-    os.environ['ANTHROPIC_API_KEY']=st.secrets['ANTHROPIC_API_KEY']
+    os.environ["LLAMA_CLOUD_API_KEY"] = st.secrets['LLAMA_CLOUD_API_KEY']
+    os.environ["OPENAI_API_KEY"] = st.secrets['OPENAI_API_KEY']
+    os.environ['ANTHROPIC_API_KEY'] = st.secrets['ANTHROPIC_API_KEY']
     # Set up OpenAI LLM and embedding model
     llm = Anthropic(model="claude-3-sonnet-20240229", temperature=0.0)
     Settings.llm = llm
     Settings.embed_model = "local:BAAI/bge-small-en-v1.5"
 
-# Function to load data from files and create vector store indices
+# Load data from files and create vector store indices
 def create_index():
-    parser = LlamaParse(api_key=os.getenv('LLAMA_CLOUD_AI'), result_type="markdown", verbose=True)
+    parser = LlamaParse(api_key=os.getenv('LLAMA_CLOUD_API_KEY'), result_type="markdown", verbose=True)
     file_extractor = {".pdf": parser}
     documents = SimpleDirectoryReader("./wfu_docs", file_extractor=file_extractor).load_data()
     node_parser = MarkdownElementNodeParser(llm=OpenAI(model="gpt-3.5-turbo-0125", temperature=0.0), num_workers=8)
@@ -50,7 +43,7 @@ def create_index():
     recursive_index = VectorStoreIndex(nodes=base_nodes+objects)
     return recursive_index
 
-# Function to set up reranker and recursive query engine
+# Set up reranker and recursive query engine
 def setup_query_engine(recursive_index):
     reranker = FlagEmbeddingReranker(top_n=5, model="BAAI/bge-reranker-large")
     recursive_query_engine = recursive_index.as_query_engine(
@@ -89,4 +82,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
