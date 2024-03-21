@@ -3,7 +3,7 @@ from dotenv import load_dotenv
 import os
 from llama_index.llms.openai import OpenAI
 from llama_index.llms.anthropic import Anthropic
-from llama_index.readers.web import BeautifulSoupWebReader
+# from llama_index.readers.web import BeautifulSoupWebReader
 from llama_parse import LlamaParse
 from llama_index.core.node_parser import MarkdownElementNodeParser
 from llama_index.postprocessor.flag_embedding_reranker import FlagEmbeddingReranker
