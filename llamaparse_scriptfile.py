@@ -11,15 +11,15 @@ from llama_index.core import SimpleDirectoryReader
 from langfuse.llama_index import LlamaIndexCallbackHandler
 from llama_index.core.callbacks import CallbackManager
 
-# Initialize LlamaIndexCallbackHandler
-langfuse_callback_handler = LlamaIndexCallbackHandler(
-    public_key='pk-lf-3b89f8c1-e7c0-4cef-a8de-5a75a1821c10',
-    secret_key='sk-lf-8a2208e8-1ed2-4ba7-9206-37076211a7e0',
-    host="https://cloud.langfuse.com"
-)
+# # Initialize LlamaIndexCallbackHandler
+# langfuse_callback_handler = LlamaIndexCallbackHandler(
+#     public_key='pk-lf-3b89f8c1-e7c0-4cef-a8de-5a75a1821c10',
+#     secret_key='sk-lf-8a2208e8-1ed2-4ba7-9206-37076211a7e0',
+#     host="https://cloud.langfuse.com"
+# )
 
-# Set the callback manager
-Settings.callback_manager = CallbackManager([langfuse_callback_handler])
+# # Set the callback manager
+# Settings.callback_manager = CallbackManager([langfuse_callback_handler])
 
 # Set up environment variables and initialize models
 def setup_environment_and_models():
@@ -70,15 +70,15 @@ def main():
     query = st.text_input("👉 Enter your query:", placeholder="Ask me anything about the MSBA program...")
     if st.button("Search"):
         with st.spinner("Searching..."):
-            try:
-                response = st.session_state['recursive_query_engine'].query(query).response
-                st.markdown(f"**Answer:**\n\n{response}")
+            # try:
+            response = st.session_state['recursive_query_engine'].query(query).response
+            st.markdown(f"**Answer:**\n\n{response}")
                 # Flush the callback handler after displaying the response
-                langfuse_callback_handler.flush()
-            except Exception as e:
-                st.error(f"An error occurred during the search: {e}")
-                # Log the error for further investigation
-                print(f"Error during search: {e}")
+            #     langfuse_callback_handler.flush()
+            # except Exception as e:
+            #     st.error(f"An error occurred during the search: {e}")
+            #     # Log the error for further investigation
+            #     print(f"Error during search: {e}")
 
 if __name__ == "__main__":
     main()
