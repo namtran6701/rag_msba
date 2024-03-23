@@ -27,9 +27,11 @@ def setup_environment_and_models():
     os.environ["LLAMA_CLOUD_API_KEY"] = st.secrets['LLAMA_CLOUD_API_KEY']
     os.environ["OPENAI_API_KEY"] = st.secrets['OPENAI_API_KEY']
     os.environ['ANTHROPIC_API_KEY'] = st.secrets['ANTHROPIC_API_KEY']
+    # os.environ["LLAMA_CLOUD_API_KEY"] = os.getenv('LLAMA_CLOUD_AI')
+    # os.environ["OPENAI_API_KEY"] = os.getenv('OPENAI_API_KEY')
+    # os.environ['ANTHROPIC_API_KEY'] = os.getenv('ANTHROPIC_API_KEY')
     # Set up OpenAI LLM and embedding model
     llm = Anthropic(model="claude-3-sonnet-20240229", temperature=0.0)
-    Settings.llm = llm
     Settings.embed_model = "local:BAAI/bge-small-en-v1.5"
 
 # Load data from files and create vector store indices
